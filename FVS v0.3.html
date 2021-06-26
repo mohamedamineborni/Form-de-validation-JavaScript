@@ -1,0 +1,255 @@
+<!Form validation system by Med Amine BORNI>
+<!credits goes directly to 4si 2016-2017 Mahdia>
+<!Anyone tries to steal my work will get a punch in his face and trust me>
+<html>
+<head>
+<style>
+.bord{
+border:10px solid crimson;
+padding:5px 10px;
+width:520px;
+height:600px;
+background-color:gray;
+}
+</style>
+<script language=javascript>
+function ajout(){
+    v = new Option(document.f.aj.value,document.f.aj.value);
+	document.f.pays.options[document.f.pays.options.length]=v;
+}
+function calcul(ch){
+    n=0;
+	for(i=0;i<=ch.length-1;i++)
+	 if(ch.charAt(i)==" ")
+	 n++;
+	return n;
+}
+var paso="aminejs";
+function passcode(){
+if(document.getElementById("pc").value==paso){
+document.getElementById("form2").style.display="none";
+document.getElementById("form1").style.display="block";
+return false;
+}else{
+document.getElementById("form2").innerHTML="wrong password!";
+return false;
+}
+}
+function verif(){ 
+
+// civilité //
+    if((!document.f.rad[0].checked && !document.f.rad[1].checked)){
+	alert("slv choisir votre gendre");
+	return false;
+	}
+//nom et prenom//
+    if(document.f.np.value==""){
+        alert("le champ nom est obligatoire");
+        return false;
+	}
+	if(document.f.np.value.length>70 || document.f.np.value.indexOf("  ")!=-1){
+	    alert("nom et prenom incorrecte");
+	    return false; 
+	}
+//telephone//
+    if(document.f.tel.value==""){
+        alert("le champ telephone est obligatoire");
+        return false;
+	}	
+	if (document.f.tel.value.charAt(0)!=7 || document.f.tel.value.length!=8 || isNaN(document.f.tel.value))
+	{
+		alert("numéro incorrecte");
+		return false;
+	}
+//email + confirmation//
+    if(document.f.mail.value==""){
+        alert("le champ mail est obligatoire");
+        return false;
+	}	
+	if (document.f.mail.value.indexOf("@")==-1|| document.f.mail.value.charAt(0)=="@" || document.f.mail.value.indexOf(".")==-1 || document.f.mail.value.indexOf(".")<document.f.mail.value.indexOf("@")){
+	    alert("email incorrecte");
+	    return false;
+	}
+	if (document.f.cf.value!=document.f.mail.value){
+		alert("confirmation e-mail incorrect");
+		return false;
+	}
+//adresse //
+    if(document.f.ad.value==""){
+        alert("le champ adresse est obligatoire");
+        return false;
+	}		
+	nb=calcul(document.f.ad.value);
+	if(document.f.ad.value.indexOf(" ")==-1 || document.f.ad.value.charAt(0)==" " || document.f.ad.value.charAt(document.f.ad.value.length-1)==" " || nb>1){
+		alert("ADRESS INCORRECT");
+		return false;
+	}
+//ville //
+	if(document.f.pays.selectedIndex==0 && document.f.aj.value==""){
+		alert("choisir une ville ou ajouter une ville");
+		return false;
+	}
+// ville verif //
+    if(document.f.pays.selectedIndex!=0){
+	document.f.aj.disabled=true;
+	}
+// cp //
+	if(isNaN(document.f.cp.value) || document.f.cp.value.length!=4){
+	    alert("CODE POSTALE INCORRECT");
+        return false;
+	}
+// remarque //
+    if(document.f.rq.value==""){
+	alert("REMARQUE OBLIGATOIRE");
+	return false;
+	}
+return false;
+}
+function verifterms(){
+//les termes//
+    if(document.f.box.checked){
+	document.f.button.disabled=false;
+	}else{
+	document.f.button.disabled=true;
+	}
+}
+var nch=500;
+// remarque system by amine v0.1 Note that:credits goes to Med amine and 4si pupils anyone changes this or steal it will get a punch in his face Hahahahaha!!
+function fud(){
+    var val=document.getElementById("t1").value;    
+	var stc = val.charAt(val.length-1).toUpperCase();
+     // if((stc.charCodeAt(0)>=65 && stc.charCodeAt(0)<=90) || stc==" "){
+	 if(nch<=500 && nch>=0){ 
+		 if(nch>0 && ((event.keyCode>=48 && event.keyCode<=90) || (event.keyCode>=96 && event.keyCode<=105) || event.keyCode==32 || event.keyCode==110 || event.keyCode==188)){
+		  nch=500-document.f.rq.value.length; 
+	      document.f.rest.value=nch;
+        }else if((nch<500) && (event.keyCode==46 || event.keyCode==8/*stc.charCodeAt(0)==127*/)){
+          nch=500-document.f.rq.value.length; 
+          document.f.rest.value=nch;
+        }else{
+		  if(nch>0 && nch<500){
+	      alert("ERROR! remarque ne doit pas contenir des caractères spéciaux!");
+		  document.f.rq.value=document.f.rq.value.substring(0,500-nch);
+		  }else{
+		  alert("ERROR!");
+		  document.f.rq.value=document.f.rq.value.substring(0,500-nch);
+		  }
+	    }
+	}else{
+	  alert("vous avez atteint la limite");
+	  nch=0;
+	  document.f.rq.value=document.f.rq.value.substring(0,500);
+	  document.f.rest.value=nch;
+	}
+	 if(nch<0){
+	  alert("vous avez atteint la limite");
+	  nch=0;
+	  document.f.rq.value=document.f.rq.value.substring(0,500);
+	  document.f.rest.value=nch;
+	 }
+	  return false;
+}
+</script>
+</head>
+<body oncontextmenu="return false">
+<div class=bord name="div1">
+<center><h2 id="lop" style="color:white;">FVS V0.4 BY MOHAMED AMINE BORNI<h2></center>
+<form id="form2" name="f2" method="post">
+  <p style="color:red;">this file is protected with a password=aminejs (not crypted)</p>
+  <p>
+    <label>Password :
+	  <input type="text" name="pass" id="pc" required />
+	  <input type="submit" name="buto" id="buto1" value="SEND" onclick="return passcode();"/>
+	</label>
+  </p>
+</form>
+<form id="form1" name="f" method="post" action="" style="display:none;" >
+  <p>
+    <label>civilité :
+      <input type="radio" name="rad" id="rad" value="radio" />
+      Monsieur</label>
+    <label>
+      <input type="radio" name="rad" id="rad" value="radio2" />
+      Madame</label>
+  </p>
+  <p>
+    <label>Nom et prénom
+      <input type="text" name="np" id="textfield" placeholder="nom" required/>
+    </label>
+  </p>
+  <p>
+    <label>Numéro téléphone
+      <input type="text" name="tel" id="textfield2" placeholder="telephone" />
+    </label>
+  </p>
+  <p>
+    <label>email
+      <input type="text" name="mail" id="textfield3" placeholder="e-mail" />
+    </label>
+    <label>confirmation
+      <input type="text" name="cf" id="textfield4" placeholder="confirmation e-mail" />
+    </label>
+  </p>
+  <p>
+    <label>adresse
+      <input type="text" name="ad" id="textfield5" placeholder="adresse"/>
+    </label>
+    <label>ville
+      <select name="pays" id="select">
+	      <option>    </option>
+		  <option>Tunis</option>
+		  <option>Sfax</option>
+		  <option>Kairouan</option>
+		  <option>Sousse</option>
+		  <option>Hammamet</option>
+		  <option>Monastir</option>
+		  <option>Nabeul</option>
+		  <option>Mahdia</option>
+		  <option>Gabès</option>
+		  <option>Ariana</option>
+		  <option>Siliana</option>
+		  <option>Bizerte</option>
+		  <option>Zaghouan</option>
+      </select>
+    </label>
+  </p>
+  <p> 	
+    <label>Ajout d'une ville
+
+      <input type="text" name="aj" id="textfield6" placeholder="ajout d'une ville" />
+	  <input type="button" name="butaj" value="ajouter ville" onclick="ajout()"/>
+    </label>
+  </p>
+  <p>
+    <label>Code Postale
+      <input type="text" name="cp" id="textfield7" placeholder="code postale"/>
+    </label>
+  </p>
+  <p>
+    <label>Remarque</label>
+  </p>
+  <p>
+    <textarea name="rq" id="t1" cols="65" rows="8" placeholder="Remarque ici" onkeydown="fup()" onkeyup="fud()"></textarea>
+  </p>
+  <p>
+    <label>Il vous reste
+      <input type="text" value="500" name="rest" id="textfield8" disabled />
+    </label>
+  </p>
+  <p>
+    <label>
+      <input type="checkbox" name="box" id="checkbox" onclick="verifterms()" onchange="verifterms()" />
+      J'accepte les termes et les conditions générales</label>
+  </p>
+  <p>
+    <label>
+      <input type="submit" name="button" id="button" value="Envoyer" disabled onclick="verifterms();verif();" />
+    </label>
+    <label>
+      <input type="reset" name="button2" id="button2" value="annuler" />
+    </label>
+  </p>
+</form>
+</div>
+</body>
+</html>
